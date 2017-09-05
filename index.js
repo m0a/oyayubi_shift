@@ -1,13 +1,13 @@
 "use strict";
 // left right normal
-var keyMap = {
-    "q": ["xa", "", ""],
-    "w": ["e", "ga", "ka"],
-    "e": ["ri", "da", "ta"],
-    "r": ["xya", "go", "ko"],
+var OrzLayoutKeymap = {
+    // "q": ["xa", "", ""],
+    // "w": ["e", "ga", "ka"],
+    // "e": ["ri", "da", "ta"],
+    // "r": ["xya", "go", "ko"],
     "t": ["re", "za", "sa"]
 };
-var NormalKeyMapTemplate = function (orginKey, normalMapKey) {
+var normalKeyMap = function (orginKey, normalMapKey) {
     return {
         "description": orginKey + " -> " + normalMapKey,
         "type": "basic",
@@ -34,7 +34,7 @@ var NormalKeyMapTemplate = function (orginKey, normalMapKey) {
         ]
     };
 };
-var RightKeyMapTemplate = function (orginKey, rightMapKey) {
+var rightOyaKeyMap = function (orginKey, rightMapKey) {
     return {
         "description": orginKey + " + right_oya -> " + rightMapKey,
         "type": "basic",
@@ -61,7 +61,7 @@ var RightKeyMapTemplate = function (orginKey, rightMapKey) {
         ]
     };
 };
-var LeftKeyMapTemplate = function (orginKey, leftMapKey) {
+var leftOyaKeyMap = function (orginKey, leftMapKey) {
     return {
         "description": orginKey + " + left_oya -> " + leftMapKey,
         "type": "basic",
@@ -88,20 +88,20 @@ var LeftKeyMapTemplate = function (orginKey, leftMapKey) {
         ]
     };
 };
-var KeyMapTemplate = function (orginKey, leftMapKey, rightMapKey, normalKey) {
+var keyMap = function (orginKey, leftMapKey, rightMapKey, normalKey) {
     var res = [];
     if (normalKey != "") {
-        res.push(NormalKeyMapTemplate(orginKey, normalKey));
+        res.push(normalKeyMap(orginKey, normalKey));
     }
     if (leftMapKey != "") {
-        res.push(LeftKeyMapTemplate(orginKey, leftMapKey));
+        res.push(leftOyaKeyMap(orginKey, leftMapKey));
     }
     if (rightMapKey != "") {
-        res.push(RightKeyMapTemplate(orginKey, rightMapKey));
+        res.push(rightOyaKeyMap(orginKey, rightMapKey));
     }
     return res;
 };
-var assignLeftOyaTemplate = function (leftOyaKey) {
+var assignLeftOyaKey = function (leftOyaKey) {
     if (leftOyaKey === void 0) { leftOyaKey = "spacebar"; }
     return {
         "description": leftOyaKey + "\u3092left_oya\u306B\u8A2D\u5B9A/ " + leftOyaKey + "\u5358\u4F53\u306A\u3089" + leftOyaKey + "\u306E\u307E\u307E",
@@ -150,7 +150,7 @@ var assignLeftOyaTemplate = function (leftOyaKey) {
         ]
     };
 };
-var assignRightOyaTemplate = function (rightOyaKey) {
+var assignRightOyaKey = function (rightOyaKey) {
     if (rightOyaKey === void 0) { rightOyaKey = "right_command"; }
     return {
         "description": rightOyaKey + "\u3092right_oya\u306B\u8A2D\u5B9A/ " + rightOyaKey + "\u5358\u4F53\u306A\u3089" + rightOyaKey + "\u306E\u307E\u307E",
@@ -199,7 +199,7 @@ var assignRightOyaTemplate = function (rightOyaKey) {
         ]
     };
 };
-var ShiftOnTemplate = function (shiftOnKey) {
+var shiftOn = function (shiftOnKey) {
     if (shiftOnKey === void 0) { shiftOnKey = "left_command"; }
     return {
         "description": "親指シフト有効化",
@@ -225,7 +225,7 @@ var ShiftOnTemplate = function (shiftOnKey) {
         "type": "basic"
     };
 };
-var ShiftOffTemplate = function (shiftOffKey) {
+var shiftOff = function (shiftOffKey) {
     if (shiftOffKey === void 0) { shiftOffKey = "right_command"; }
     return {
         "description": "親指シフト無効化",
@@ -264,14 +264,14 @@ var MainTemplate = function (manipulators) {
 };
 var main = function () {
     var manipulators = [];
-    manipulators.push(ShiftOnTemplate());
-    manipulators.push(assignLeftOyaTemplate());
-    manipulators.push(assignRightOyaTemplate());
-    for (var orginKey in keyMap) {
-        var _a = keyMap[orginKey], leftMapKey = _a[0], rightMapKey = _a[1], normalKey = _a[2];
-        manipulators.push.apply(manipulators, KeyMapTemplate(orginKey, leftMapKey, rightMapKey, normalKey));
+    manipulators.push(shiftOn());
+    manipulators.push(assignLeftOyaKey());
+    manipulators.push(assignRightOyaKey());
+    for (var orginKey in OrzLayoutKeymap) {
+        var _a = OrzLayoutKeymap[orginKey], leftMapKey = _a[0], rightMapKey = _a[1], normalKey = _a[2];
+        manipulators.push.apply(manipulators, keyMap(orginKey, leftMapKey, rightMapKey, normalKey));
     }
-    manipulators.push(ShiftOffTemplate());
-    console.log(JSON.stringify(MainTemplate(manipulators)));
+    manipulators.push(shiftOff());
+    console.log(JSON.stringify(MainTemplate(manipulators), null, "    "));
 };
 main();
