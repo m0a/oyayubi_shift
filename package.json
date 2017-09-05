@@ -1,0 +1,11 @@
+{
+  "name": "oyayubi_shift",
+  "version": "0.1.0",
+  "description": "親指シフトキーマッピング for Karabiner-Elements",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
